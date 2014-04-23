@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pg_dump {{ project }} > /mnt/s3/{{ project }}/`date +%s`_{{ project }}.pgsql
+

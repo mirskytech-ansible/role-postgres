@@ -1,0 +1,21 @@
+# roles/postgres/meta/main.yml
+---
+dependencies:
+    - { role: s3fs }
+
+galaxy_info:
+  author: Peter Golm
+  license: MIT
+  min_ansible_version: 1.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - raring
+        - saucy
+
+  categories:
+    - database
+    - sql
+    - system
+
+version: 0.5.0
