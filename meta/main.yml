@@ -1,7 +1,7 @@
 # roles/postgres/meta/main.yml
 ---
 dependencies:
-    - { role: s3fs, src: 'git+ssh://git.mirsky.net/roles/s3fs.git#alias=s3fs2go' }
+    - { role: s3fs, src: 'git+ssh://git.mirsky.net/roles/s3fs.git' }
 
 galaxy_info:
   author: Peter Golm
