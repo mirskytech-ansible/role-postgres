@@ -1,0 +1,3 @@
+# databases:
+#   - { database: <name of database>, user: <name of database user> }
+#   - { database: myproject, user: webadmin }

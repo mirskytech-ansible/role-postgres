@@ -1,20 +1,11 @@
 # file: roles/postgres/tasks/main.yml
 ---
 
-
   - name: add postgres9.3 ppa
     sudo: yes
     apt_repository: repo="{{ item }}" state="present"
     with_items:
         - deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main
-        
-        
-# add postgres 9.3 repo
-# cat /etc/apt/sources.list.d/pgdg.list
-# deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main
-# wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-# sudo apt-get update
-# sudo apt-get install postgresql-9.3 pgadmin3
     
   - name: add postgres9.3 key
     sudo: yes
@@ -25,31 +16,37 @@
     apt: pkg="{{ item }}" state="present" update_cache="yes"
     with_items:
       - postgresql-9.3
+      - python-pip
       - pgadmin3
-  
+      - libpq-dev
+      - python-dev
+
+  - name: install pg_dump
+    sudo: yes
+    pip: name="psycopg2"
+    
   # create user & database, grant privileges
   - name: create user
     sudo: yes
     sudo_user: postgres
-    postgresql_user: name={{ project }} password={{ project }} state=present
+    postgresql_user: name={{ item.user }} password={{ item.user }} state=present
+    with_items: databases
   
   - name: create database
     sudo: yes
     sudo_user: postgres
-    postgresql_db: name={{ project }} state=present
+    postgresql_db: name={{ item.database }} state=present
+    with_items: databases
     
   - name: grant privileges
     sudo: yes
     sudo_user: postgres
     postgresql_privs: >
         type=database
-        database={{ project }}
-        role={{ project }}
+        database={{ item.database  }}
+        role={{ item.user }}
         privs=ALL
-    
-  - name: install pg_dump
-    sudo: yes
-    pip: name="psycopg2"
+    with_items: databases
     
   - name: create backup script
     sudo: yes
@@ -64,7 +61,7 @@
     sudo: yes
     file: "{{ item }}"
     with_items:
-      - "path=/mnt/s3/{{ project }} owner='{{ root_user }}' mode=770 group='www-data' state=directory"
+      - "path=/mnt/s3/{{ project }} mode=770 group='www-data' state=directory"
     
   - name: create regular backup
     sudo: yes
