@@ -7,12 +7,15 @@ galaxy_info:
   license: MIT
   min_ansible_version: 1.5
   platforms:
-    - name: GenericUNIX
+    - name: Ubuntu
       versions:
-        - any
+        - all
+    - name: Debian
+      versions:
+        - all
 
   categories:
     - database
     - database:sql
 
-version: 0.5.0
+version: 0.1.0

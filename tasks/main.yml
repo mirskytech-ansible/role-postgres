@@ -47,28 +47,3 @@
         role={{ item.user }}
         privs=ALL
     with_items: databases
-    
-  - name: create backup script
-    sudo: yes
-    template: >
-      src=../templates/pgbackup.sh.j2
-      dest=/var/lib/postgresql/pgbackup.sh
-      mode=500
-      owner=postgres
-      group=www-data
-    
-  - name: create backup directory
-    sudo: yes
-    file: "{{ item }}"
-    with_items:
-      - "path=/mnt/s3/{{ project }} mode=770 group='www-data' state=directory"
-    
-  - name: create regular backup
-    sudo: yes
-    cron: >
-      name="backup for sql db {{ project }}"
-      user="postgres"
-      hour="1"
-      minute="59"
-      job="/var/lib/postgresql/pgbackup.sh > /tmp/pgbackup.output 2>&1"
-#            job="pg_dump {{ project }} > /mnt/s3/{{ project }}/`date +%s`.{{ project }}.sql"
