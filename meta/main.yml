@@ -1,21 +1,18 @@
 # roles/postgres/meta/main.yml
 ---
-dependencies:
-    - { role: s3fs, src: 'git+ssh://git.mirsky.net/ansible-roles/s3fs.git#alias=s3fs' }
+dependencies: []
 
 galaxy_info:
-  author: Peter Golm
+  author: Andrew Mirsky
   license: MIT
-  min_ansible_version: 1.4
+  min_ansible_version: 1.5
   platforms:
-    - name: Ubuntu
+    - name: GenericUNIX
       versions:
-        - raring
-        - saucy
+        - any
 
   categories:
     - database
-    - sql
-    - system
+    - database:sql
 
 version: 0.5.0
